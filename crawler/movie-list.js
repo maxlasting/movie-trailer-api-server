@@ -39,18 +39,20 @@ const sleep = (time) => (
     
     items.each((index, item) => {
       const movie = $(item)
-      const id = movie.find('.cover-wp').data('id')
+      const movieId = movie.find('.cover-wp').data('id')
       const title = movie.find('.title').text()
       const rate = movie.find('.rate').text()
       const poster = movie.find('img').attr('src').replace('s_ratio', 'l_ratio')
       
-      data.push({ id, title, rate, poster })
+      data.push({ movieId, title, rate, poster })
     })
     
     return data
   })
   
   browser.close()
+  
+  console.log(result)
   
   process.send(result)
   process.exit(0)

@@ -24,7 +24,7 @@ const Movie = mongoose.model('Movie')
   
   child.on('message', async (data) => {
     for (let i=0; i<data.length; i++) {
-      const movie = await Movie.findOne({ id: data[i].id })
+      const movie = await Movie.findOne({ movieId: data[i].movieId })
       
       if (!movie) {
         await new Movie(data[i]).save()

@@ -1,12 +1,16 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Mixed = Schema.Types.Mixed
+const { ObjectId, Mixed } = Schema.Types
 
 const MovieSchema = new Schema({
-  id: {
+  movieId: {
     type: String,
     unique: true  // 代表这个数据是唯一的
   },
+  category: [{
+    type: ObjectId,
+    ref: 'Category'
+  }],
   title: String,
   rate: Number,
   summary: String,
@@ -37,5 +41,5 @@ MovieSchema.pre('save', function (next) {
   }
   next()
 })
-console.log(1111)
+
 mongoose.model('Movie', MovieSchema)
