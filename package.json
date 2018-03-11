@@ -1,0 +1,22 @@
+{
+  "name": "movie-trailer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ENV=development node app.js"
+  },
+  "author": "Fq",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "glob": "^7.1.2",
+    "koa": "^2.5.0",
+    "mongoose": "^5.0.9",
+    "puppeteer": "^1.1.1",
+    "ramda": "^0.25.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
