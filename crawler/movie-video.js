@@ -37,6 +37,8 @@ process.on('message', async (movies) => {
         const link = it.attr('href')
         return { coverUrl, link }
       }
+      
+      return {}
     })
     
     let videoUrl = null;
@@ -59,16 +61,14 @@ process.on('message', async (movies) => {
         
         return ''
       })
-      
-      process.send({
-        movieId,
-        videoUrl,
-        coverUrl: trailerInfo.coverUrl
-      })
     }
+    
+    process.send({
+      movieId,
+      videoUrl,
+      coverUrl: trailerInfo.coverUrl
+    })
   }
-  
-  console.log('数据全部传输完毕...')
   
   browser.close()
   process.exit(0)
