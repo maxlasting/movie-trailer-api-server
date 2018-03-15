@@ -6,6 +6,7 @@ async function start() {
   
   // require('./task/movie-list.js')
   // require('./task/movie-api.js')
+  require('./task/movie-video.js')
 }
 
 start()

@@ -42,9 +42,9 @@ const sleep = (time) => (
       const movieId = movie.find('.cover-wp').data('id')
       const title = movie.find('.title').text()
       const rate = movie.find('.rate').text()
-      const poster = movie.find('img').attr('src').replace('s_ratio', 'l_ratio')
+      const posterUrl = movie.find('img').attr('src').replace('s_ratio', 'l_ratio')
       
-      data.push({ movieId, title, rate, poster })
+      data.push({ movieId, title, rate, posterUrl })
     })
     
     return data

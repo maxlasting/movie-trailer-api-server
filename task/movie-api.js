@@ -43,7 +43,7 @@ const fetchMovie = async (data) => {
           movie.country = pubdate[0].split('(')[1].split(')')[0]
         }
         
-        movie.movieTypes = movie_type || []
+        movie.types = movie_type || []
         movie.year = movieData.year || 33333
         
         for (let i=0; i<movie_type.length; i++) {
