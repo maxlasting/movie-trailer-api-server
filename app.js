@@ -1,12 +1,10 @@
 const Koa = require('koa')
 const database = require('./middlewares/database')
+const task = require('./task')
 
 async function start() {
   await database()
-  
-  await require('./task/movie-list.js')()
-  await require('./task/movie-api.js')()
-  await require('./task/movie-video.js')()
+  await task()
 }
 
 start()
