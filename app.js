@@ -1,10 +1,3 @@
-const Koa = require('koa')
-const database = require('./middlewares/database')
-const task = require('./task')
-
-async function start() {
-  await database()
-  await task()
-}
-
-start()
+require('babel-core/register')()
+require('babel-polyfill')
+require('./application')
