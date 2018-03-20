@@ -1,9 +1,16 @@
 const { Controller, Get } = require('../decorator/decorator.js')
+const { getMovieDataList } = require('../services/movie.js')
 
-@Controller('/api/movie')
+@Controller('/api/v0/movie')
 class MovieRouter {
   @Get('/')
-  async getMovieDataList (ctx, next) {
-    ctx.body = 'ok'
+  async _getMovieDataList (ctx, next) {
+    const movies = await getMovieDataList()
+    
+    ctx.body = {
+      code: 0,
+      msg: 'ok',
+      data: movies
+    }
   }
 }

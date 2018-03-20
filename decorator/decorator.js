@@ -6,11 +6,6 @@ const { resolve } = require('url')
 const pathPrefix = Symbol('pathPrefix')
 const routerMap = new Map()
 
-/**
- * 类装饰器
- * @param  {String} path 路由的跟路径
- * @return {function}    
- */
 const Controller = function (path) {
   return (target) => (
     target.prototype[pathPrefix] = path
@@ -71,12 +66,7 @@ class Router {
   }
 }
 
-module.exports = {
-  Router,
-  Controller,
-  Get,
-  Post
-}
+module.exports = { Router, Controller, Get, Post }
 
 
 
