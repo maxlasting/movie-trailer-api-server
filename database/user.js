@@ -24,7 +24,14 @@ const UserSchema = new Schema({
     required: true,
     default: 0
   },
-  lockUntil: Number,
+  role: {
+    type: Number,
+    default: 1
+  },
+  lockUntil: {
+    type: Number,
+    default: 0
+  },
   meta: {
     createAt: {
       type: Date,
@@ -63,7 +70,7 @@ UserSchema.pre('save', function (next) {
     // 将 严 和 密码合成 hash 加密
     bcrypt.hash(this.password, salt, (err, hash) => {
       if (err) return next(err)
-      user.password = hash
+      this.password = hash
       next()
     })
   })
@@ -81,6 +88,7 @@ UserSchema.methods = {
   },
   incLoginAttempts(user) {
     return new Promise((resolve, reject) => {
+      console.log(this.lockUntil && this.lockUntil < Date.now())
       if (this.lockUntil && this.lockUntil < Date.now()) {
         this.update({
           $set: { loginAttempts: 1 },
@@ -100,11 +108,12 @@ UserSchema.methods = {
           update.$set = {
             lockUntil: Date.now() + LOCKED_TIME
           }
-          this.update(update, (err) => {
-            if (err) reject(err)
-            resolve(true)
-          })
         }
+        
+        this.update(update, (err) => {
+          if (err) reject(err)
+          resolve(true)
+        })
       }
     })
   }

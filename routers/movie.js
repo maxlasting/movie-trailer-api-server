@@ -1,4 +1,4 @@
-const { Controller, Get } = require('../decorator/decorator.js')
+const { Controller, Get, Post } = require('../decorator/decorator.js')
 const { getMovieDataList } = require('../services/movie.js')
 
 @Controller('/api/v0/movie')
