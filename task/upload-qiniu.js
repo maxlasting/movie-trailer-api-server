@@ -58,6 +58,6 @@ module.exports = () => (
         }
       }
     }
-    console.log(`完整数据处理完毕!`)
+    console.log(`数据上传七牛云完毕!`)
   })
 )
