@@ -1,5 +1,5 @@
 module.exports = {
-  db: 'mongodb://localhost/movie-trailer',
+  db: 'mongodb://localhost/douban-movie',
   port: 8222,
   base: '',
   qiniu: {

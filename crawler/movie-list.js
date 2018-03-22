@@ -9,7 +9,7 @@ const sleep = (time) => (
 )
 
 ;(async () => {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
   
   console.log('浏览器初始化完毕...')
   
@@ -25,7 +25,7 @@ const sleep = (time) => (
   
   await page.waitForSelector('.more')
   
-  for (let i=0; i<15; i++) {
+  for (let i=0; i<5; i++) {
     await page.click('.more', {
       delay: 50
     })

@@ -7,7 +7,7 @@ const sleep = (time) => new Promise(resolve => {
 })
 
 process.on('message', async (movies) => {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
   
   console.log(`已接收到${movies.length}条数据！`)
   
