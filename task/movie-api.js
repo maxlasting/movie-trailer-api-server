@@ -26,25 +26,28 @@ module.exports = () => (
       ]
     })
     
+    console.log(`已经获取到${movies.length}条待加工数据...`)
+    
     for (let i=0; i<movies.length; i++) {
       const movie = movies[i]
       const movieData = await fetchMovie(movie)
 
       if (movieData) {
         movie.title = movieData.alt_title || movieData.title || ''
-        movie.rawTitle = movieData.title || movieData.alt_title || ''
+        movie.raw_title = movieData.title || movieData.alt_title || ''
         movie.summary = movieData.summary || ''
 
         if (movieData.attrs) {
           const { pubdate, movie_type, year } = movieData.attrs
-          
+          console.log(pubdate)
           if (pubdate[0]) {
-            movie.pubdate = pubdate[0].split('(')[0]
-            movie.country = pubdate[0].split('(')[1].split(')')[0]
+            const _cv = pubdate[0].split('(')
+            movie.pubdate = _cv[0] ? _cv[0] : '3333-33-33'
+            movie.country = _cv[1] ? _cv[1].split(')')[0] : '未知'
           }
           
           movie.types = movie_type || []
-          movie.year = movieData.year || 33333
+          movie.year = year[0] || 33333
           
           for (let i=0; i<movie_type.length; i++) {
             const type = movie_type[i]
@@ -89,6 +92,7 @@ module.exports = () => (
     }
     
     console.log('数据库字段加工完毕！')
+    
     resolve()
   })
 )

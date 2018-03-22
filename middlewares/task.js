@@ -3,9 +3,9 @@ const task = require('../task')
 
 const execRule = new schedule.RecurrenceRule()
 
-execRule.dayOfWeek = [1, 3, 5];
-execRule.hour = 22;
-execRule.minute = 0;
+execRule.dayOfWeek = [1, 4, 5];
+execRule.hour = 18;
+execRule.minute = 43;
 
 module.exports = function () {
   schedule.scheduleJob(execRule, task)

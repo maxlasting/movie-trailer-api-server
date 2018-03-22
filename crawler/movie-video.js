@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer')
-const { join } = require('path')
 
 const url = 'https://movie.douban.com/subject/'
 
@@ -8,9 +7,7 @@ const sleep = (time) => new Promise(resolve => {
 })
 
 process.on('message', async (movies) => {
-  const browser = await puppeteer.launch({
-    executablePath: join(__dirname, '../chromium/Chromium.app/Contents/MacOS/Chromium')
-  })
+  const browser = await puppeteer.launch()
   
   console.log(`已接收到${movies.length}条数据！`)
   

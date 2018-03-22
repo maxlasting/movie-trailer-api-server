@@ -29,7 +29,7 @@ module.exports = () => (
       if (invoked) return 
       invoked = true
       if (code === 0) {
-        console.log('数据全部传输完毕...')
+        console.log('数据全部完善完毕，等待上传...')
         resolve()
       }
       reject(new Error('The exit code is ' + code))

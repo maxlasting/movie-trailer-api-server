@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer')
-const path = require('path')
 
-const url = `https://movie.douban.com/tag/#/?sort=T&range=6,10&tags=`
+const url = `https://movie.douban.com/tag/#/?sort=T&range=6,10&tags=&playable=1`
 
 const sleep = (time) => (
   new Promise((resolve) => {
@@ -10,9 +9,7 @@ const sleep = (time) => (
 )
 
 ;(async () => {
-  const browser = await puppeteer.launch({
-    executablePath: path.join(__dirname, '../chromium/Chromium.app/Contents/MacOS/Chromium')
-  })
+  const browser = await puppeteer.launch()
   
   console.log('浏览器初始化完毕...')
   
@@ -20,15 +17,20 @@ const sleep = (time) => (
   
   console.log('新建标签页完毕...')
   
-  await page.goto(url)
+  await page.goto(url, {
+    waitUntil: 'networkidle2'
+  })
   
   console.log('跳转到指定url:' + url)
   
   await page.waitForSelector('.more')
   
-  for (let i=0; i<1; i++) {
+  for (let i=0; i<15; i++) {
+    await page.click('.more', {
+      delay: 50
+    })
+    console.log(`已经加载第${i+1}次...`)
     await sleep(2000)
-    await page.click('.more')
   }
   
   const result = await page.evaluate(() => {
@@ -36,6 +38,8 @@ const sleep = (time) => (
     const data = []
     
     if (!items.length) return data
+    
+    console.log(`已经找到${items.length}个节点...`)
     
     items.each((index, item) => {
       const movie = $(item)
@@ -52,8 +56,15 @@ const sleep = (time) => (
   
   browser.close()
   
-  console.log(result)
+  // console.log(result)
   
-  process.send(result)
+  console.log(`可以发送${result.length}条基础数据...`)
+  
+  for (let i=0; i<result.length; i+=10) {
+    const _result = result.slice(i, i+10)
+    process.send(_result)
+    await sleep(2000)
+  }
+  
   process.exit(0)
 })()

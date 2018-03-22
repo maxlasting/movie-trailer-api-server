@@ -20,19 +20,24 @@ module.exports = () => (
     child.on('exit', (code) => {
       if (invoked) return 
       invoked = true
-      if (code === 0) resolve()
+      if (code === 0) {
+        console.log('基础数据建立完毕...')
+        resolve()
+      }
       reject(new Error('The exit code is ' + code))
     })
     
     child.on('message', async (data) => {
+      console.log(`子进程接到${data.length}条数据`)
       for (let i=0; i<data.length; i++) {
-        const movie = await Movie.findOne({ movieId: data[i].movieId })
+        let movie = await Movie.findOne({ movieId: data[i].movieId })
         
         if (!movie) {
-          await new Movie(data[i]).save()
+          movie = new Movie(data[i])
+          await movie.save()
+          console.log(`已经保存基础数据: ${movie.title}`)
         }
       }
-      console.log('基础数据建立完毕！')
     })
   })
 )

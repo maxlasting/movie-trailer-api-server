@@ -10,15 +10,22 @@ const sleep = (time) => new Promise(resolve => {
 const updateMovieData = async function () {
   console.log('定时任务开始!')
   console.log('='.repeat(80))
-  await require('./movie-list.js')()
-  console.log('='.repeat(80))
-  await sleep(2000)
-  await require('./movie-api.js')()
-  await sleep(2000)
-  console.log('='.repeat(80))
+  
+  // await require('./movie-list.js')()
+  // await sleep(2000)
+  // 
+  // console.log('='.repeat(80))
+  // 
+  // await require('./movie-api.js')()
+  // await sleep(2000)
+  // 
+  // console.log('='.repeat(80))
+  
   await require('./movie-video.js')()
   await sleep(2000)
+  
   console.log('='.repeat(80))
+  
   await require('./upload-qiniu.js')()
 }
 

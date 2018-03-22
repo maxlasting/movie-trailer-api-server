@@ -3,7 +3,6 @@ const nanoid = require('nanoid')
 const cfg = require('../config')
 const mongoose = require('mongoose')
 const Movie = mongoose.model('Movie')
-const url = require('url')
 
 const { AK, SK, bucket, resBaseUrl } = cfg.qiniu
 
@@ -46,9 +45,9 @@ module.exports = () => (
           const cover = await upload(movie.coverUrl, nanoid())
           const poster = await upload(movie.posterUrl, nanoid())
           
-          video && (movie.video = url.resolve(resBaseUrl, video.key))
-          cover && (movie.cover = url.resolve(resBaseUrl, cover.key))
-          poster && (movie.poster = url.resolve(resBaseUrl, poster.key))
+          video && (movie.video = resBaseUrl + video.key)
+          cover && (movie.cover = resBaseUrl + cover.key)
+          poster && (movie.poster = resBaseUrl + poster.key + '?imageMogr2/thumbnail/x1680/crop/1080x1600')
           
           await movie.save()
           
