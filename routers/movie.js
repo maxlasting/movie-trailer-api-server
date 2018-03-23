@@ -1,7 +1,7 @@
 const { Controller, Get, Post } = require('../decorator/decorator.js')
 const { getMovieDataList, getMovieDetail } = require('../services/movie.js')
 
-@Controller('/doubanapi/v0/movie')
+@Controller('/api/v0/movie')
 class MovieRouter {
   @Get('/list')
   async _getMovieDataList (ctx, next) {
