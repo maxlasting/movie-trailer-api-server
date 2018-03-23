@@ -11,9 +11,10 @@
 ```
 npm run dev ===> 开发服务
 npm start ===> 启动服务
+npm test ===> 手动执行爬虫脚本
 ```
 
-在线接口示例：[点击查看](https://www.newfq.com/doubanapi/movies)
+在线接口示例：[点击查看](https://www.newfq.com/doubanapi/v0/movie/list/?page=1&size=10)
 
 ## 技术选型
 
