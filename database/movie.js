@@ -24,6 +24,7 @@ const MovieSchema = new Schema({
   raw_title: String,
   types: [String],
   pubdate: Mixed,
+  country: String,
   tags: Mixed,
   meta: {
     createAt: {
