@@ -1,19 +1,25 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
-const checkPassword = async function (email, _password) {
-  const user = await User.findOne({ email })
-
+const checkPassword = async function (nameOrEmail, _password) {
+  const user = await User.findOne({
+    $or: [
+      { username: nameOrEmail },
+      { email: nameOrEmail }
+    ]
+  })
+  
   if (user) {
     const match = await user.comparePassword(_password, user.password)
     
-    if (!match) {
-      await user.incLoginAttempts()
+    // 如果没有哦匹配成功或者之前被锁定过，那么就重置锁定信息
+    if (!match || user.lockUntil) await user.incLoginAttempts()
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('===user.isLoced===', user.isLocked)
     }
     
-    console.log(user.isLocked)
-    
-    if (user.isLocked) return {}
+    if (user.isLocked) return { locked: true }
     
     return { match, user }
   }

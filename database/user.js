@@ -25,8 +25,8 @@ const UserSchema = new Schema({
     default: 0
   },
   role: {
-    type: Number,
-    default: 1
+    type: String,
+    default: 'user'
   },
   lockUntil: {
     type: Number,
@@ -88,7 +88,12 @@ UserSchema.methods = {
   },
   incLoginAttempts(user) {
     return new Promise((resolve, reject) => {
-      console.log(this.lockUntil && this.lockUntil < Date.now())
+      if (process.env.NODE_ENV === 'development') {
+        console.log('========')
+        console.log(this.loginAttempts)
+        console.log('========')
+      }
+      
       if (this.lockUntil && this.lockUntil < Date.now()) {
         this.update({
           $set: { loginAttempts: 1 },

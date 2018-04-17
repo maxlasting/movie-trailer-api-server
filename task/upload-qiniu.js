@@ -28,13 +28,7 @@ const upload = (resUrl, key) => (
 
 module.exports = () => (
   new Promise(async (resolve, reject) => {
-    const movies = await Movie.find({
-      $or: [
-        {video: { $exists: false }},
-        {video: ''},
-        {video: null}
-      ]
-    })
+    const movies = await Movie.find({})
     
     for (let i=0; i<movies.length; i++) {
       const movie = movies[i]

@@ -1,15 +1,16 @@
 const Koa = require('koa')
-const Load = require('./load')
+const Loader = require('../loader')
 const cfg = require('../config')
 
-Load.register('database')
-Load.register('common')
-Load.register('router')
-Load.register('task')
+const modules = ['database', 'common', 'router', 'task']
+
+modules.forEach((m) => (
+  Loader.register(m)
+))
 
 const app = new Koa()
 
-Load.init(app)
+Loader.init(app)
 
 app.listen(cfg.port, () => {
   console.log(`Server is running at %d`, cfg.port)

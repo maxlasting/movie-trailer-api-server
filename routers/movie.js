@@ -1,21 +1,22 @@
-const { Controller, Get, Post } = require('../decorator/decorator.js')
-const { getMovieDataList, getMovieDetail } = require('../services/movie.js')
+const { prefixer, get, post } = require('../libs/decorator.js')
+const { getMovieList, getMovieDetail } = require('../services/movie.js')
 
-@Controller('/api/v0/movie')
+@prefixer('/movie')
 class MovieRouter {
-  @Get('/list')
-  async _getMovieDataList (ctx, next) {
+  @get('/list')
+  async _getMovieList (ctx, next) {
     const { page, size, base, type, year } = ctx.query
-    const movies = await getMovieDataList(page, size, base, type, year)
+    const movies = await getMovieList(page, size, base, type, year)
     
     ctx.body = {
       success: true,
       msg: 'ok',
       data: movies
     }
+    await next()
   }
   
-  @Get('/detail/:id')
+  @get('/detail/:id')
   async _getMovieDetail (ctx, next) {
     const { id } = ctx.params
     const detail = await getMovieDetail(id)
@@ -25,5 +26,7 @@ class MovieRouter {
       msg: 'ok',
       data: detail
     }
+    
+    await next()
   }
 }

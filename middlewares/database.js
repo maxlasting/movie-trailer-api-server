@@ -7,6 +7,23 @@ mongoose.Promise = global.Promise
 
 glob.sync(join(__dirname, '../database', '**/*.js')).forEach(require)
 
+const initSu = async () => {
+  const User = mongoose.model('User')
+  
+  let user = await User.findOne({username: 'Fq'})
+  
+  if (user) return
+  
+  user = new User({
+    username: 'Fq',
+    emial: 'maxlasting@163.com',
+    password: '123',
+    role: 'admin' 
+  })
+  
+  await user.save()
+}
+
 module.exports = () => {
   let maxConnectTimes = 0
   
@@ -22,6 +39,7 @@ module.exports = () => {
     mongoose.connection.on('disconnected', () => {
       if (++maxConnectTimes >= 5) {
         reject(new Error('数据库错误!'))
+        return false
       }
       mongoose.connect(db)
     })
@@ -30,8 +48,9 @@ module.exports = () => {
       console.error(err)
     })
     
-    mongoose.connection.once('open', () => {
+    mongoose.connection.once('open', async () => {
       console.log(`Connected to mongodb -> ${db}`)
+      await initSu()
       resolve(true)
     })
   })

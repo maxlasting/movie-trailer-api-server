@@ -20,7 +20,7 @@ const baseFilter = {
   title: 1
 }
 
-const getMovieDataList = async function (page, size, base, type, year) {
+const getMovieList = async function (page, size, base, type, year) {
   let query = {}
   let filter = commonFilter
   
@@ -56,4 +56,7 @@ const getMovieDetail = async function (id) {
   return {}
 }
 
-module.exports = { getMovieDataList, getMovieDetail }
+module.exports = { getMovieList, getMovieDetail }
+
+
+

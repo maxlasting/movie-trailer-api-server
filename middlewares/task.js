@@ -4,7 +4,7 @@ const task = require('../task')
 const execRule = new schedule.RecurrenceRule()
 
 execRule.dayOfWeek = [1];
-execRule.hour = 18;
+execRule.hour = 3;
 execRule.minute = 0;
 
 module.exports = function () {

@@ -1,6 +1,6 @@
 const { join } = require('path')
 
-class Load {
+class Loader {
   constructor () {
     this.middlewares = []
   }
@@ -24,4 +24,4 @@ class Load {
   }
 }
 
-module.exports = new Load()
+module.exports = new Loader()

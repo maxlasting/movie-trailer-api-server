@@ -1,53 +1,98 @@
-const { Controller, Post } = require('../decorator/decorator.js')
+const { prefixer, get, post, auth, admin, required } = require('../libs/decorator.js')
 const { checkPassword, userRegister } = require('../services/user.js')
+const { formatDate } = require('../utils')
 
-@Controller('/api/v0/user')
+@prefixer('/user')
 class UserController {
-  @Post('/login')
+  @post('/check')
+  @auth
+  async _checkLoginStatus (ctx, next) {
+    const { user } = ctx.session
+    const { username, _id } = user
+    
+    ctx.body = { 
+      success: true, 
+      msg: `欢迎: ${user.username} 回来!`,
+      data: {
+        username,
+        _id,
+        loginTime: formatDate(new Date()),
+        timestamp: Date.now()
+      }
+    }
+    
+    await next()
+  }
+  
+  @post('/login')
+  @required({
+    body: ['username', 'password']
+  })
   async _checkPassword (ctx, next) {
-    const { email, password } = ctx.request.body
-    console.log(email, password)
-    const matchData = await checkPassword(email, password)
+    console.log(ctx.session)
+    const { username: nameOrEmail, password } = ctx.request.body
+    // console.log(nameOrEmail, password)
+    const matchData = await checkPassword(nameOrEmail, password)
     // console.log(matchData)
     if (matchData.match) {
-      return (ctx.body = { code: 0 })
+      const { user } = matchData
+      const { username, _id } = user
+      
+      ctx.session.user = {
+        username,
+        _id
+      }
+      
+      console.log(ctx.session)
+      
+      return (ctx.body = { 
+        success: true, 
+        msg: `欢迎: ${user.username} 回来!`,
+        data: {
+          username,
+          _id,
+          loginTime: formatDate(new Date()),
+          timestamp: Date.now()
+        }
+      })
+    }
+    
+    if (matchData.locked) {
+      return (ctx.body = {
+        success: false,
+        msg: '密码错误次数过多，请稍后再试!'
+      })
     }
     
     ctx.body = {
-      code: 1,
+      success: false,
       msg: '邮箱或密码错误!'
     }
+    
+    await next()
   }
   
-  @Post('/register')
+  @post('/register')
+  @required({
+    body: ['username', 'email', 'password']
+  })
   async _userRegister (ctx, next) {
     const { username, email, password } = ctx.request.body
     
-    try {
-      const user = await userRegister(username, email, password)
-      
-      if (user) {
-        // ctx.response.status = 302
-        // ctx.response.redirect = '/'
-        
-        ctx.body = {
-          success: true,
-          msg: ''
-        }
-      } else {
-        ctx.body = {
-          success: false,
-          msg: '用户名或者邮箱已经被注册!'
-        }
+    const user = await userRegister(username, email, password)
+    
+    if (user) {
+      ctx.body = {
+        success: true,
+        msg: '注册成功!'
       }
-    } catch (e) {
-      ctx.response.status = 503
-      
+    } else {
       ctx.body = {
         success: false,
-        msg: '资源未找到',
-        code: 503
+        msg: '用户名或者邮箱已经被注册!'
       }
     }
+    
+    await next()
   }
 }
