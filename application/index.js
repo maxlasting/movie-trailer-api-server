@@ -2,7 +2,7 @@ const Koa = require('koa')
 const Loader = require('../loader')
 const cfg = require('../config')
 
-const modules = ['database', 'common', 'router', 'task']
+const modules = ['catcher', 'database', 'common', 'router', 'task']
 
 modules.forEach((m) => (
   Loader.register(m)

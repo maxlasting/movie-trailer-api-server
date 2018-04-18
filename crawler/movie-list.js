@@ -25,7 +25,7 @@ const sleep = (time) => (
   
   await page.waitForSelector('.more')
   
-  for (let i=0; i<2; i++) {
+  for (let i=0; i<1; i++) {
     await page.click('.more', {
       delay: 50
     })

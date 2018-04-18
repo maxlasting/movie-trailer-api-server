@@ -108,7 +108,14 @@ const required = (rules) => covert(async (ctx, next) => {
     errs = errs.concat(vals.filter((item) => (!ctx.request[key][item])))
   }
   
-  if (errs.length) return ctx.throw(412, `${errs.join(',')} is required`)
+  if (errs.length) {
+    ctx.body = {
+      success: false,
+      msg: `${errs.join(',')} 没有填写!`,
+      code: 412
+    }
+    return
+  }
   
   await next()
 })

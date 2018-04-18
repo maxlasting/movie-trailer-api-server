@@ -2,6 +2,8 @@ const { prefixer, get, post, auth, admin, required } = require('../libs/decorato
 const { checkPassword, userRegister } = require('../services/user.js')
 const { formatDate } = require('../utils')
 
+const retUserData = (username, _id) => ({username, _id, loginTime: formatDate(new Date()), timestamp: Date.now()})
+
 @prefixer('/user')
 class UserController {
   @post('/check')
@@ -13,12 +15,7 @@ class UserController {
     ctx.body = { 
       success: true, 
       msg: `欢迎: ${user.username} 回来!`,
-      data: {
-        username,
-        _id,
-        loginTime: formatDate(new Date()),
-        timestamp: Date.now()
-      }
+      data: retUserData(username, _id)
     }
     
     await next()
@@ -29,7 +26,7 @@ class UserController {
     body: ['username', 'password']
   })
   async _checkPassword (ctx, next) {
-    console.log(ctx.session)
+    // console.log(ctx.session)
     const { username: nameOrEmail, password } = ctx.request.body
     // console.log(nameOrEmail, password)
     const matchData = await checkPassword(nameOrEmail, password)
@@ -48,12 +45,7 @@ class UserController {
       return (ctx.body = { 
         success: true, 
         msg: `欢迎: ${user.username} 回来!`,
-        data: {
-          username,
-          _id,
-          loginTime: formatDate(new Date()),
-          timestamp: Date.now()
-        }
+        data: retUserData(username, _id)
       })
     }
     
